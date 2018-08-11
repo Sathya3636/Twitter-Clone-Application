@@ -1,0 +1,13 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" style="padding-top:20px;">
+    <div class="col-md-4">
+        Follow
+        <input id="SearchBox" type="text" name="query" placeholder="Search" class="form-control" style="width:250%" />
+    </div>
+    <div class="col-md-4">
+        @{Html.RenderPartial("~/Views/Shared/_TwitterPartial.cshtml"); }
+    </div>
+</div>
