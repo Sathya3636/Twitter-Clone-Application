@@ -11,7 +11,15 @@ namespace TwitterClone.Controllers
         // GET: Twitter
         public ActionResult Tweet()
         {
-            return View();
+            if (Session["UserName"] != null)
+            {
+
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
     }
 }

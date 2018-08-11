@@ -23,6 +23,11 @@ namespace BusinessLayer
             this.db.SaveChanges();
         }
 
+        public Person Login(string userName, string password)
+        {
+            var person = this.db.PersonList.Where(a => a.UserName.Equals(userName) && a.Password.Equals(password)).FirstOrDefault();
+            return person;
+        }
         //public void Dispose()
         //{
         //    this.db.Dispose();

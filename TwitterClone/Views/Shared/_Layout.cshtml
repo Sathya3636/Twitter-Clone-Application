@@ -24,8 +24,14 @@
                     <li>@Html.ActionLink("Welcome to Admin", "Tweet", "Twitter")</li>
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("Profile", "About", "Home")</li>
-                    <li>@Html.ActionLink("Sign Up", "Register","Account")</li>
-                    @*<li>@Html.ActionLink("SignOut", "Contact", "Home")</li>*@
+                    @if (Session["UserName"] == null)
+                    {
+                        <li>@Html.ActionLink("Sign Up", "Register", "Account")</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Sign Out", "LogOff", "Account")</li>
+                    }
                 </ul>
             </div>
         </div>
