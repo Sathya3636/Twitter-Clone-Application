@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -21,17 +21,16 @@
             </div>
             <div class="navbar-collapse" style="display:inline-block">
                 <ul class="nav navbar-nav navbar-right" style="display:inline-block">
-                    <li style="display:inline-block">@Html.ActionLink("Welcome to Admin", "Tweet", "Twitter") <span>|</span></li>
-                    <li style="display:inline-block">@Html.ActionLink("Home", "Index", "Home") <span>|</span></li>
-                    <li style="display:inline-block">@Html.ActionLink("Home", "Index", "Home") <span>|</span></li>
-                    <li style="display:inline-block">@Html.ActionLink("Profile", "About", "Home") <span>|</span></li>
-                    @if (Session["UserName"] == null)
+                    @if (Session["UserName"] != null)
                     {
-                        <li style="display:inline-block">@Html.ActionLink("Sign Up", "Register", "Account")</li>
+                        <li style="display:inline-block">@Html.ActionLink("Welcome to Admin", "Tweet", "Twitter") <span>|</span></li>
+                        <li style="display:inline-block">@Html.ActionLink("Home", "Index", "Home") <span>|</span></li>
+                        <li style="display:inline-block">@Html.ActionLink("Profile", "About", "Home") <span>|</span></li>
+                        <li style="display:inline-block">@Html.ActionLink("Sign Out", "LogOff", "Account")</li>
                     }
                     else
                     {
-                        <li style="display:inline-block">@Html.ActionLink("Sign Out", "LogOff", "Account")</li>
+                        <li style="display:inline-block">@Html.ActionLink("Sign Up", "Register", "Account")</li>
                     }
                 </ul>
             </div>

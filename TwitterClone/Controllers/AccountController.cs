@@ -1,5 +1,5 @@
 ﻿using BusinessLayer;
-using CommonEntities;
+using DataAccessLayer;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using System;
@@ -36,7 +36,7 @@ namespace TwitterClone.Controllers
                 var person = this.personManager.Login(objUser.UserName, objUser.Password);
                 if (person != null)
                 {
-                    Session["UserName"] = person.UserName.ToString();
+                    Session["UserName"] = person.User_Id.ToString();
                     return RedirectToAction("Tweet", "Twitter");
                 }
             }
@@ -62,7 +62,7 @@ namespace TwitterClone.Controllers
             {
                 var user = new Person
                 {
-                    UserName = model.UserName,
+                    User_Id = model.UserName,
                     Password = model.Password,
                     FullName = model.FullName,
                     Email = model.Email,
@@ -72,7 +72,7 @@ namespace TwitterClone.Controllers
                 try
                 {
                     this.personManager.Save(user);
-                    Session["UserName"] = user.UserName.ToString();
+                    Session["UserName"] = user.User_Id.ToString();
                     return RedirectToAction("Tweet", "Twitter");
 
                 }

@@ -1,5 +1,4 @@
-﻿using CommonEntities;
-using DataAccessLayer;
+﻿using DataAccessLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,23 +9,29 @@ namespace BusinessLayer
 {
     public class PersonManager
     {
-        private DatabaseContext db = new DatabaseContext();
+       // private MVCApplicationEntities db = new MVCApplicationEntities();
 
-        public IQueryable<Person> FindAll()
-        {
-            return this.db.PersonList;
-        }
+        //public IQueryable<Person> FindAll()
+        //{
+        //    return this.db.People;
+        //}
 
         public void Save(Person person)
         {
-            this.db.PersonList.Add(person);
-            this.db.SaveChanges();
+            using (var db = new MVCApplicationEntities())
+            {
+                db.People.Add(person);
+                db.SaveChanges();
+            }  
         }
 
         public Person Login(string userName, string password)
         {
-            var person = this.db.PersonList.Where(a => a.UserName.Equals(userName) && a.Password.Equals(password)).FirstOrDefault();
-            return person;
+            using (var db = new MVCApplicationEntities())
+            {
+                var person = db.People.Where(a => a.User_Id.Equals(userName) && a.Password.Equals(password)).FirstOrDefault();
+                return person;
+            }
         }
         //public void Dispose()
         //{

@@ -49,10 +49,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CommonEntities\CommonEntities.csproj">
-      <Project>{26d1b212-1a23-40c7-943f-ec1f67ee101b}</Project>
-      <Name>CommonEntities</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj">
       <Project>{6db7f81e-d516-45a4-a6c7-955cbf185cd2}</Project>
       <Name>DataAccessLayer</Name>
