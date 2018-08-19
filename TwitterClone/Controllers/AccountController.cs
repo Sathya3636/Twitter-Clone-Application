@@ -155,7 +155,16 @@ namespace TwitterClone.Controllers
                     {
                         Session["LoginModel"] = user;
                         Session["UserName"] = user.User_Id.ToString();
-                        return RedirectToAction("Tweet", "Twitter");
+                        if (action == "Update")
+                        {
+                            return RedirectToAction("Tweet", "Twitter");
+                        }
+                        else
+                        {
+                            Session["LoginModel"] = null;
+                            Session["UserName"] = null;
+                            return RedirectToAction("Login", "Account");
+                        }
                     }
                     else
                     {
@@ -171,7 +180,8 @@ namespace TwitterClone.Controllers
 
             return View(model);
         }
-        [ValidateAntiForgeryToken]
+
+        [AllowAnonymous]
         public ActionResult LogOff()
         {
             Session["UserName"] = null;

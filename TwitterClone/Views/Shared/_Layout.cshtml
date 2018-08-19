@@ -9,25 +9,27 @@
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header" style="width:100%">
-                @Html.ActionLink("My Twitter Clone", "Login", "Account", new { area = "" }, new { @class = "navbar-brand" })
+    <div class="container">
+        @if (Session["UserName"] != null)
+        {
+            @Html.ActionLink("Welcome to Twitter Clone", "Tweet", "Twitter", new { area = "" }, new { @class = "navbar-brand" })
+        }
+        else
+        {
+            @Html.ActionLink("Welcome to Twitter Clone", "Login", "Account", new { area = "" }, new { @class = "navbar-brand" })
+        }
 
-                <ul class="nav navbar-nav navbar-right" style="display: inline; margin-left:35%;">
-                    @if (Session["UserName"] != null)
-                    {
-                        <li style="display: inline">@Html.ActionLink("Welcome to Admin", "Tweet", "Twitter") <span>| </span></li>
-                        <li style="display: inline">@Html.ActionLink("Profile", "Update", "Account") <span>| </span></li>
-                        <li style="display: inline">@Html.ActionLink("Sign Out", "LogOff", "Account")</li>
-                    }
-                    else
-                    {
-                        <li>@Html.ActionLink("Sign Up", "Register", "Account")</li>
-                    }
-                </ul>
-            </div>
-        </div>
+        <ul class="nav navbar-nav navbar-right" style="display: inline; margin-left:65%;">
+            @if (Session["UserName"] != null)
+            {
+                <li style="display: inline">@Html.ActionLink("Profile", "Update", "Account") <span>| </span></li>
+                <li style="display: inline">@Html.ActionLink("Sign Out", "LogOff", "Account")</li>
+            }
+            else
+            {
+                <li style="display: inline">@Html.ActionLink("Sign Up", "Register", "Account")</li>
+            }
+        </ul>
     </div>
 
     <div class="container body-content">

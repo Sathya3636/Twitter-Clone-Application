@@ -1,12 +1,7 @@
 ﻿@using TwitterClone.Models
 @model LoginViewModel
-@{
-    ViewBag.Title = "Welcome to Twitter Clone";
-}
-
-<h2>@ViewBag.Title.</h2>
 <div class="row">
-    <div class="col-md-8">
+    <div style="width:100%;">
         <section id="loginForm">
             @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
@@ -33,13 +28,12 @@
                     </div>
                 </div>
                 <p>
-                    New User? @Html.ActionLink("Signup", "Register")
-                </p>                
+                    New User? @Html.ActionLink("Sign Up", "Signup", "Register")
+                </p>
             }
         </section>
     </div>
 </div>
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
