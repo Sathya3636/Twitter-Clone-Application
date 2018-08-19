@@ -10,27 +10,20 @@
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container" style="display:inline-block;float:right;margin-left: 50%">
-            <div class="navbar-header" style="display:inline-block">
-                @*<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>*@
-                @Html.ActionLink("My Twitter Clone", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse" style="display:inline-block">
-                <ul class="nav navbar-nav navbar-right" style="display:inline-block">
+        <div class="container">
+            <div class="navbar-header" style="width:100%">
+                @Html.ActionLink("My Twitter Clone", "Login", "Account", new { area = "" }, new { @class = "navbar-brand" })
+
+                <ul class="nav navbar-nav navbar-right" style="display: inline; margin-left:35%;">
                     @if (Session["UserName"] != null)
                     {
-                        <li style="display:inline-block">@Html.ActionLink("Welcome to Admin", "Tweet", "Twitter") <span>|</span></li>
-                        <li style="display:inline-block">@Html.ActionLink("Home", "Index", "Home") <span>|</span></li>
-                        <li style="display:inline-block">@Html.ActionLink("Profile", "About", "Home") <span>|</span></li>
-                        <li style="display:inline-block">@Html.ActionLink("Sign Out", "LogOff", "Account")</li>
+                        <li style="display: inline">@Html.ActionLink("Welcome to Admin", "Tweet", "Twitter") <span>| </span></li>
+                        <li style="display: inline">@Html.ActionLink("Profile", "Update", "Account") <span>| </span></li>
+                        <li style="display: inline">@Html.ActionLink("Sign Out", "LogOff", "Account")</li>
                     }
                     else
                     {
-                        <li style="display:inline-block">@Html.ActionLink("Sign Up", "Register", "Account")</li>
+                        <li>@Html.ActionLink("Sign Up", "Register", "Account")</li>
                     }
                 </ul>
             </div>
