@@ -1,6 +1,7 @@
 ﻿using DataAccessLayer;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -66,6 +67,107 @@ namespace BusinessLayer
             {
                 var person = db.People.Where(a => a.User_Id.ToLower().Equals(userName.ToLower()) && a.Password.Equals(password) && a.Active == true).FirstOrDefault();
                 return person;
+            }
+        }
+
+        public void SaveTweet(Tweet tweet)
+        {
+            using (var db = new MVCApplicationEntities())
+            {
+                db.Tweets.Add(tweet);
+                db.SaveChanges();
+            }
+        }
+
+        public Collection<Tweet> GetTweets(string userId)
+        {
+            Collection<Tweet> tweets = new Collection<Tweet>();
+            using (var db = new MVCApplicationEntities())
+            {
+                db.Tweets.Where(x => x.User_Id == userId).ToList()
+                    .ForEach(y =>
+                    tweets.Add(new Tweet()
+                    {
+                        Tweet_Id = y.Tweet_Id,
+                        User_Id = y.User_Id,
+                        Message = y.Message,
+                        Created = y.Created
+
+                    }));
+            }
+
+            return tweets;
+        }
+
+        public Collection<Tweet> GetFollowingTweets(string userId)
+        {
+            Collection<Tweet> tweets = new Collection<Tweet>();
+            using (var db = new MVCApplicationEntities())
+            {
+                db.Tweets.Join(db.Followings, r => r.User_Id, p => p.User_Id, (r, p) =>
+                       new
+                       {
+                           r.Tweet_Id,
+                           p.Following_Id,
+                           r.Message,
+                           r.Created
+                       }).ToList()
+                    .ForEach(y =>
+                    tweets.Add(new Tweet()
+                    {
+                        Tweet_Id = y.Tweet_Id,
+                        User_Id = y.Following_Id,
+                        Message = y.Message,
+                        Created = y.Created
+
+                    }));
+            }
+
+            return tweets;
+        }
+
+        public Collection<Following> GetFollowings(string userId)
+        {
+            Collection<Following> follwings = new Collection<Following>();
+            using (var db = new MVCApplicationEntities())
+            {
+                db.Followings.Where(x => x.User_Id == userId)
+                    .ToList()
+                    .ForEach(y =>
+                    follwings.Add(new Following()
+                    {
+                        User_Id = y.User_Id,
+                        Following_Id = y.Following_Id
+                    }));
+            }
+
+            return follwings;
+        }
+
+        public Collection<Following> GetFollowers(string userId)
+        {
+            Collection<Following> followers = new Collection<Following>();
+            using (var db = new MVCApplicationEntities())
+            {
+                db.Followings.Where(x => x.Following_Id == userId)
+                    .ToList()
+                    .ForEach(y =>
+                    followers.Add(new Following()
+                    {
+                        User_Id = y.User_Id,
+                        Following_Id = y.Following_Id
+                    }));
+            }
+
+            return followers;
+        }
+
+        public void FollowUser(string userId, string follwerId)
+        {
+            using (var db = new MVCApplicationEntities())
+            {
+                db.Followings.Add(new Following { User_Id = userId, Following_Id = follwerId });
+                db.SaveChanges();
             }
         }
     }

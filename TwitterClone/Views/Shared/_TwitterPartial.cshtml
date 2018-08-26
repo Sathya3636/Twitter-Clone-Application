@@ -3,6 +3,23 @@
     What are you doing?
     <div>
         <textarea id="tweetId" class="form-control"></textarea>
-        <button class="btn btn-default">Update</button>
+        <br />
+        <button id="btnUpdate" class="btn btn-default">Update</button>
     </div>
 </div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+    $(function () {
+
+        $('#btnUpdate').click(function (event) {
+            debugger;
+            event.preventDefault();
+            var message = $('#tweetId').val();
+            $.ajax({
+                type: "POST",
+                url: "/Twitter/AddTweet?message=" + message
+            });
+        });
+    });
+</script>
