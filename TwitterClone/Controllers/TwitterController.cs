@@ -40,7 +40,7 @@ namespace TwitterClone.Controllers
             }
         }
 
-        //
+        // Commments
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
