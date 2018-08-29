@@ -77,7 +77,7 @@ namespace TwitterClone.Controllers
             return RedirectToAction("Tweet", "Twitter");
         }
 
-        public ActionResult GetFollowingUsers(string user)
+        public ActionResult GetUsers(string type)
         {
             List<FollowingModel> lst = new List<FollowingModel>();
             try
@@ -85,27 +85,46 @@ namespace TwitterClone.Controllers
                 if (Session["UserName"] != null)
                 {
                     string userId = Session["UserName"].ToString();
-                    
-                    var followersList = personManager.GetFollowers(userId);
-                    
 
-                    followersList.ToList().ForEach(x =>
+
+
+                    if (type == "follow")
+                    {
+                        var userList = personManager.GetFollowers(userId);
+                        userList.ToList().ForEach(x =>
                 lst.Add(new FollowingModel()
                 {
                     UserId = x.User_Id,
                     FollowingId = x.Following_Id
 
                 }));
-                    
+                    }
+                    else
+                    {
+
+                        var userList = personManager.GetFollowings(userId);
+
+                        userList.ToList().ForEach(x =>
+                lst.Add(new FollowingModel()
+                {
+                    UserId = x.User_Id,
+                    FollowingId = x.Following_Id
+
+                }));
+                    }
+
+
+
                 }
-                
+
             }
             catch (Exception)
             {
                 AddErrors("Failed to fetch Followers. Please try again later..");
             }
-            return Json(lst);
+            return Json(lst, JsonRequestBehavior.AllowGet);
         }
+
         private void AddErrors(string error)
         {
             ModelState.AddModelError("", error);

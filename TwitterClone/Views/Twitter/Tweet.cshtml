@@ -18,43 +18,57 @@
         @{Html.RenderPartial("~/Views/Shared/_TwitterPartial.cshtml"); }
         <br />
         <br />
-        @if (Model.IsTweetPage == true)
-        {
-            <table>
+        <div id="tweetDiv">
+            @if (Model.IsTweetPage == true)
+            {
+                <table>
+                    <thead>
+                        <tr><th>List of Tweets</th></tr>
+                        <tr>
+                            <th style="width:20%;">User Name</th>
+                            <th style="width:60%;">Message</th>
+                            <th style="width:20%;">Created Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model.Tweets)
+                        {
+                            <tr>
+                                <td style="width:20%;">
+                                    @item.UserId
+                                </td>
+                                <td style="width:60%;">
+                                    @item.Message
+                                </td>
+                                <td style="width:20%;">
+                                    @item.CreatedDate
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+        <div id="userListDiv" style="display:none">
+            <h4 id="userListHeader"></h4>
+            <table id="userListTable">
                 <thead>
-                    <tr><th>List of Tweets</th></tr>
                     <tr>
                         <th style="width:20%;">User Name</th>
-                        <th style="width:60%;">Message</th>
-                        <th style="width:20%;">Created Date</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach (var item in Model.Tweets)
-                    {
-                        <tr>
-                            <td style="width:20%;">
-                                @item.UserId
-                            </td>
-                            <td style="width:60%;">
-                                @item.Message
-                            </td>
-                            <td style="width:20%;">
-                                @item.CreatedDate
-                            </td>
-                        </tr>
-                    }
-                </tbody>
+                <tbody></tbody>
             </table>
-        }
-
+        </div>
+        
     </div>
 </div>
 <div class="row" style="padding-top:20px; width:100%;">
     <div class="col-md-4">
         <ul>
             <li>
-                <span id="followers">Followers (<a href="#">@Model.FollowersCount</a>)</span>
+                <span id="follow">Follow (<a href="#">@Model.FollowersCount</a>)</span>
             </li>
             <li>
                 <span id="following">Following (<a href="#">@Model.FollowingCount</a>)</span>
@@ -79,20 +93,42 @@
         });
 
         $('a').on('click', function (e) {
-            debugger;
+           
             var type = $(this).closest('span').attr('id');
-            if (type == "followers") {
-                $.ajax({
-                    type: "GET",
-                    url: "/Twitter/SearchUsersByName?name=" + name
-                });
-            }
-            else {
-                $.ajax({
-                    type: "GET",
-                    url: "/Twitter/SearchUsersByName?name=" + name
-                });
-            }
+
+            $.ajax({
+                type: "GET",
+                dataType: 'json',
+                url: "/Twitter/GetUsers?type=" + type,
+                success: function (data) {
+                    $("#userListDiv").show();
+                    $("#tweetDiv").hide();
+                    $("#userListTable").find('tbody').html('');
+
+                    if (type == "follow")
+                        $("#userListHeader").text('Follow');
+                    else
+                        $("#userListHeader").text('Following');
+
+                    var trHTML = '';
+                    
+                    $.each(data, function (index, item) {
+                        if (type == "follow") {
+                            trHTML += '<tr><td>' + item.UserId + '</td></tr>';
+                        }
+                        else {
+                            trHTML += '<tr><td>' + item.FollowingId + '</td></tr>';
+                        }
+                    });
+
+                    $("#userListTable").append(trHTML);
+                    
+                },
+                error: function (e) {
+                   
+                }
+            });
+
         });
     });
 </script>
