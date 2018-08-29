@@ -23,6 +23,8 @@ namespace TwitterClone.Controllers
                 TweetViewModel tweetViewModel = new TweetViewModel();
                 tweetViewModel.Tweets = new Collection<TweetModel>();
                 Collection<Tweet> tweets = personManager.GetFollowingTweets(userId);
+                tweetViewModel.FollowersCount = personManager.GetFollowers(userId).Count;
+                tweetViewModel.FollowingCount = personManager.GetFollowings(userId).Count;
                 tweets.ToList().ForEach(x =>
                 tweetViewModel.Tweets.Add(new TweetModel()
                 {
@@ -75,6 +77,35 @@ namespace TwitterClone.Controllers
             return RedirectToAction("Tweet", "Twitter");
         }
 
+        public ActionResult GetFollowingUsers(string user)
+        {
+            List<FollowingModel> lst = new List<FollowingModel>();
+            try
+            {
+                if (Session["UserName"] != null)
+                {
+                    string userId = Session["UserName"].ToString();
+                    
+                    var followersList = personManager.GetFollowers(userId);
+                    
+
+                    followersList.ToList().ForEach(x =>
+                lst.Add(new FollowingModel()
+                {
+                    UserId = x.User_Id,
+                    FollowingId = x.Following_Id
+
+                }));
+                    
+                }
+                
+            }
+            catch (Exception)
+            {
+                AddErrors("Failed to fetch Followers. Please try again later..");
+            }
+            return Json(lst);
+        }
         private void AddErrors(string error)
         {
             ModelState.AddModelError("", error);
