@@ -24,6 +24,10 @@ namespace TwitterClone.Models
     {
         public Collection<TweetModel> Tweets { get; set; }
         public Collection<FollowingModel> Followings { get; set; }
+
+        public int FollowersCount { get; set; }
+
+        public int FollowingCount { get; set; }
         public bool IsTweetPage { get; set; }
     }
 

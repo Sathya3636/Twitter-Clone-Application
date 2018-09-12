@@ -23,6 +23,8 @@ namespace TwitterClone.Controllers
                 TweetViewModel tweetViewModel = new TweetViewModel();
                 tweetViewModel.Tweets = new Collection<TweetModel>();
                 Collection<Tweet> tweets = personManager.GetFollowingTweets(userId);
+                tweetViewModel.FollowersCount = personManager.GetFollowers(userId).Count;
+                tweetViewModel.FollowingCount = personManager.GetFollowings(userId).Count;
                 tweets.ToList().ForEach(x =>
                 tweetViewModel.Tweets.Add(new TweetModel()
                 {
@@ -40,7 +42,7 @@ namespace TwitterClone.Controllers
             }
         }
 
-        //
+        // Commments
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
@@ -73,6 +75,54 @@ namespace TwitterClone.Controllers
                 AddErrors("Problem with our end. Please try again later..");
             }
             return RedirectToAction("Tweet", "Twitter");
+        }
+
+        public ActionResult GetUsers(string type)
+        {
+            List<FollowingModel> lst = new List<FollowingModel>();
+            try
+            {
+                if (Session["UserName"] != null)
+                {
+                    string userId = Session["UserName"].ToString();
+
+
+
+                    if (type == "follow")
+                    {
+                        var userList = personManager.GetFollowers(userId);
+                        userList.ToList().ForEach(x =>
+                lst.Add(new FollowingModel()
+                {
+                    UserId = x.User_Id,
+                    FollowingId = x.Following_Id
+
+                }));
+                    }
+                    else
+                    {
+
+                        var userList = personManager.GetFollowings(userId);
+
+                        userList.ToList().ForEach(x =>
+                lst.Add(new FollowingModel()
+                {
+                    UserId = x.User_Id,
+                    FollowingId = x.Following_Id
+
+                }));
+                    }
+
+
+
+                }
+
+            }
+            catch (Exception)
+            {
+                AddErrors("Failed to fetch Followers. Please try again later..");
+            }
+            return Json(lst, JsonRequestBehavior.AllowGet);
         }
 
         private void AddErrors(string error)
